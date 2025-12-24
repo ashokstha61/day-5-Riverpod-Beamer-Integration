@@ -14,6 +14,7 @@ Clean separation of concerns (presentation, state, domain)
 Responsive, reusable UI components
 
 Folder Structure
+
 lib/
 │
 ├── core/                  # App-wide utilities, constants, themes, widgets

@@ -1,7 +1,9 @@
 import 'package:day5riverpodandbeamer/core/widgets/custom_category_card.dart';
+import 'package:day5riverpodandbeamer/features/home/presentation/widgets/featuredcardwidget.dart';
+import 'package:day5riverpodandbeamer/features/home/presentation/widgets/search_bar.dart';
+import 'package:flutter/material.dart';
 import 'package:day5riverpodandbeamer/core/constants/app_colors.dart';
 import 'package:day5riverpodandbeamer/core/constants/app_spacing.dart';
-import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -12,6 +14,35 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
+
+  final List<Map<String, dynamic>> featured = [
+    {
+      'color': AppColors.deepPurple,
+      'title': 'Design',
+      'subtitle': 'Explore amazing content',
+    },
+    {
+      'color': AppColors.teal,
+      'title': 'Development',
+      'subtitle': 'Explore amazing content',
+    },
+    {
+      'color': AppColors.orange,
+      'title': 'Marketing',
+      'subtitle': 'Explore amazing content',
+    },
+  ];
+
+  final List<Map<String, dynamic>> categories = [
+    {'icon': Icons.palette, 'title': 'Creative', 'color': AppColors.pink},
+    {'icon': Icons.code, 'title': 'Technology', 'color': AppColors.blue},
+    {'icon': Icons.business, 'title': 'Business', 'color': AppColors.green},
+    {
+      'icon': Icons.fitness_center,
+      'title': 'Fitness',
+      'color': AppColors.orange,
+    },
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -64,23 +95,9 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ],
                 ),
-                child: const TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Search...',
-                    prefixIcon: Icon(
-                      Icons.search,
-                      color: AppColors.textSecondary,
-                    ),
-                    border: InputBorder.none,
-                    contentPadding: EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 15,
-                    ),
-                  ),
-                ),
+                child: SearchBarWidget(),
               ),
             ),
-
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
               child: Row(
@@ -98,92 +115,20 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
-
             SizedBox(
               height: 200,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
-                itemCount: 3,
-                itemBuilder: (context, index) {
-                  final colors = [
-                    AppColors.deepPurple,
-                    AppColors.teal,
-                    AppColors.orange,
-                  ];
-                  final titles = ['Design', 'Development', 'Marketing'];
-
-                  return Container(
-                    width: 300,
-                    margin: const EdgeInsets.only(right: AppSpacing.md),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [colors[index], colors[index].withOpacity(0.7)],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: [
-                        BoxShadow(
-                          color: colors[index].withOpacity(0.3),
-                          blurRadius: AppSpacing.lg,
-                          offset: const Offset(0, 8),
-                        ),
-                      ],
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 6,
-                            ),
-                            decoration: BoxDecoration(
-                              color: AppColors.white.withOpacity(0.3),
-                              borderRadius: BorderRadius.circular(
-                                AppSpacing.borderSm,
-                              ),
-                            ),
-                            child: const Text(
-                              'NEW',
-                              style: TextStyle(
-                                color: AppColors.white,
-                                fontSize: AppSpacing.fontSm,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: AppSpacing.sm),
-                          Text(
-                            titles[index],
-                            style: const TextStyle(
-                              color: AppColors.white,
-                              fontSize: AppSpacing.fontSm,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: AppSpacing.sm),
-                          const Text(
-                            'Explore amazing content',
-                            style: TextStyle(
-                              color: AppColors.white,
-                              fontSize: AppSpacing.fontSm,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
+                itemCount: featured.length,
+                itemBuilder: (context, index) => FeaturedCardWidget(
+                  color: featured[index]['color'],
+                  title: featured[index]['title'],
+                  subtitle: featured[index]['subtitle'],
+                ),
               ),
             ),
-
-            SizedBox(height: AppSpacing.md),
-
+            const SizedBox(height: AppSpacing.md),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: AppSpacing.md),
               child: Text(
@@ -195,44 +140,27 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-
             const SizedBox(height: AppSpacing.md),
-
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
-              child: GridView.count(
+              child: GridView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                crossAxisCount: 2,
-                crossAxisSpacing: AppSpacing.md,
-                mainAxisSpacing: AppSpacing.md,
-                childAspectRatio: 1.5,
-                children: const [
-                  CategoryCard(
-                    icon: Icons.palette,
-                    title: 'Creative',
-                    color: AppColors.pink,
-                  ),
-                  CategoryCard(
-                    icon: Icons.code,
-                    title: 'Technology',
-                    color: AppColors.blue,
-                  ),
-                  CategoryCard(
-                    icon: Icons.business,
-                    title: 'Business',
-                    color: AppColors.green,
-                  ),
-                  CategoryCard(
-                    icon: Icons.fitness_center,
-                    title: 'Fitness',
-                    color: AppColors.orange,
-                  ),
-                ],
+                itemCount: categories.length,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: AppSpacing.md,
+                  mainAxisSpacing: AppSpacing.md,
+                  childAspectRatio: 1.5,
+                ),
+                itemBuilder: (context, index) => CategoryCard(
+                  icon: categories[index]['icon'],
+                  title: categories[index]['title'],
+                  color: categories[index]['color'],
+                ),
               ),
             ),
-
-            SizedBox(height: AppSpacing.lg),
+            const SizedBox(height: AppSpacing.lg),
           ],
         ),
       ),
